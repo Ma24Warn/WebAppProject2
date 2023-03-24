@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Homework 2</title>
+        <link rel="stylesheet" href="password.css">
+    </head>
+
+    <body>
+
+        <script>
+            
+
+            var userForm = document.createElement("form");
+            userForm.setAttribute("id", "functionForm");
+
+            var formHeader = document.createElement("header");
+            formHeader.innerHTML = "Enter a Username and a Strong Password";
+
+
+            var uNameDiv = document.createElement("div");
+            uNameDiv.setAttribute("id", "uNameDiv");
+            uNameDiv.setAttribute("class", "text");
+
+            var uNameLabel = document.createElement("label");
+            uNameLabel.setAttribute("for", "uName");
+            uNameLabel.innerHTML = "Enter a Username";
+
+            var uNameInput = document.createElement("input");
+            //<input type="text" id="uName" name="uName" required>
+            uNameInput.setAttribute("type","text");
+            uNameInput.setAttribute("id","uName");
+            uNameInput.setAttribute("name","uName");
+            uNameInput.required = true;
+
+            uNameDiv.appendChild(uNameLabel);
+            uNameDiv.appendChild(uNameInput);
+
+
+            var pWordDiv = document.createElement("div");
+            pWordDiv.setAttribute("id", "pWord1Div");
+            pWordDiv.setAttribute("class", "text");
+
+            var pWordLabel = document.createElement("label");
+            pWordLabel.setAttribute("for", "pWord1");
+            pWordLabel.innerHTML = "Enter a Password";
+
+            var pWordInput = document.createElement("input");
+            //<input type="password" id="pWord1" name="pWord1" required>
+            pWordInput.setAttribute("type","password");
+            pWordInput.setAttribute("id","pWord1");
+            pWordInput.setAttribute("name","pWord1");
+            pWordInput.required = true;
+
+            pWordDiv.appendChild(pWordLabel);
+            pWordDiv.appendChild(pWordInput);
+
+
+            var pWordDiv2 = document.createElement("div");
+            pWordDiv2.setAttribute("id", "pWord2Div");
+            pWordDiv2.setAttribute("class", "text");
+
+            var pWordLabel2 = document.createElement("label");
+            pWordLabel2.setAttribute("for", "pWord2");
+            pWordLabel2.innerHTML = "Re-enter Previous Password";
+
+            var pWordInput2 = document.createElement("input");
+            //<input type="password" id="pWord2" name="pWord2" required>
+            pWordInput2.setAttribute("type","password");
+            pWordInput2.setAttribute("id","pWord2");
+            pWordInput2.setAttribute("name","pWord2");
+            pWordInput2.required = true;
+
+            pWordDiv2.appendChild(pWordLabel2);
+            pWordDiv2.appendChild(pWordInput2);
+
+
+            var sInputDiv = document.createElement("div");
+            pWordDiv.setAttribute("id", "submit");
+            
+            var sInput = document.createElement('input');
+            //<input type="submit" id="submit" name="submit">
+            sInput.setAttribute("type", "submit");
+            sInput.setAttribute("id", "submit");
+            sInput.setAttribute("name", "submit");
+
+            sInputDiv.appendChild(sInput);
+
+
+            //<p id="errorMessage"></p>
+            var errorMessage = document.createElement("p");
+            errorMessage.setAttribute("id", "errorMessage");
+
+
+            userForm.appendChild(formHeader);
+            userForm.appendChild(uNameDiv);
+            userForm.appendChild(pWordDiv);
+            userForm.appendChild(pWordDiv2);
+            userForm.appendChild(sInputDiv);
+            userForm.appendChild(errorMessage);
+
+            document.querySelector("body").appendChild(userForm);
+
+        </script>
+
+    </body>
+</html>
