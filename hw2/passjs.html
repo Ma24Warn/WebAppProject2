@@ -7,18 +7,19 @@
     </head>
 
     <body>
-        <form id="functionForm"></form>
+        <form id="functionForm" onsubmit="return false"></form>
 
         <script>
             
-
+            //create reference to the form
             var userForm = document.getElementById("functionForm");
 
-
+            //create the header
             var formHeader = document.createElement("header");
             formHeader.innerHTML = "Enter a Username and a Strong Password";
 
 
+            //create the username div and its label and input
             var uNameDiv = document.createElement("div");
             uNameDiv.setAttribute("id", "uNameDiv");
             uNameDiv.setAttribute("class", "text");
@@ -28,7 +29,6 @@
             uNameLabel.innerHTML = "Enter a Username";
 
             var uNameInput = document.createElement("input");
-            //<input type="text" id="uName" name="uName" required>
             uNameInput.setAttribute("type","text");
             uNameInput.setAttribute("id","uName");
             uNameInput.setAttribute("name","uName");
@@ -38,6 +38,7 @@
             uNameDiv.appendChild(uNameInput);
 
 
+            //create the first password div and its label and input
             var pWordDiv = document.createElement("div");
             pWordDiv.setAttribute("id", "pWord1Div");
             pWordDiv.setAttribute("class", "text");
@@ -47,7 +48,6 @@
             pWordLabel.innerHTML = "Enter a Password";
 
             var pWordInput = document.createElement("input");
-            //<input type="password" id="pWord1" name="pWord1" required>
             pWordInput.setAttribute("type","password");
             pWordInput.setAttribute("id","pWord1");
             pWordInput.setAttribute("name","pWord1");
@@ -57,6 +57,7 @@
             pWordDiv.appendChild(pWordInput);
 
 
+            //create the re-enter password div and its label and input
             var pWordDiv2 = document.createElement("div");
             pWordDiv2.setAttribute("id", "pWord2Div");
             pWordDiv2.setAttribute("class", "text");
@@ -66,7 +67,6 @@
             pWordLabel2.innerHTML = "Re-enter Previous Password";
 
             var pWordInput2 = document.createElement("input");
-            //<input type="password" id="pWord2" name="pWord2" required>
             pWordInput2.setAttribute("type","password");
             pWordInput2.setAttribute("id","pWord2");
             pWordInput2.setAttribute("name","pWord2");
@@ -76,11 +76,11 @@
             pWordDiv2.appendChild(pWordInput2);
 
 
+            //create the button div and its submit button and generate random password button
             var sInputDiv = document.createElement("div");
             sInputDiv.setAttribute("id", "buttons");
             
             var sInput = document.createElement('input');
-            //<input type="submit" id="submit" name="submit">
             sInput.setAttribute("type", "submit");
             sInput.setAttribute("id", "submit");
             sInput.setAttribute("name", "submit");
@@ -95,11 +95,12 @@
             sInputDiv.appendChild(generatePassword);
 
 
-            //<p id="errorMessage"></p>
+            //the message displayed at the bottom
             var errorMessage = document.createElement("p");
             errorMessage.setAttribute("id", "errorMessage");
 
 
+            //append header, divs, and paragraph to the form
             userForm.appendChild(formHeader);
             userForm.appendChild(uNameDiv);
             userForm.appendChild(pWordDiv);
@@ -108,10 +109,7 @@
             userForm.appendChild(errorMessage);
 
 
-
-
-
-
+            //generate random password
             document.getElementById("generate").addEventListener("click", function(event) {
 
                 var randomPassword = "";
@@ -119,6 +117,7 @@
                 var length = Math.floor(Math.random() * (30 - 8 + 1) ) + 8; //8-30
                 var strength = 0;
 
+                //execute whats in this loop until the random password has a strength >= 60
                 while (strength <= 60) {
                     for(var x = 0; x < length; x++) {
                         var randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
@@ -126,17 +125,206 @@
 
                     }
 
-                    strength = validPassword(randomPassword); //i need to make a call to validPassword that takes in a string password, not an event???
+                    let cur;
+                    let N=0, U=0, L=0, D=0, S=0, Dm=0, Sm=0;
+
+                    //uppercase, lowercase, digits, and symbols
+                    for (let x = 0; x < randomPassword.length; x++) {
+                        cur = randomPassword.charAt(x);
+
+                        //if its a digit
+                        if (cur >= '0' && cur <= '9') {
+                            //at the beginning or end
+                            if (x == 0 || x == randomPassword.length) {
+                                D++;
+                            }
+                            //in the middle
+                            else {
+                                D++;
+                                Dm++;
+                            }
+                            
+                        }
+
+                        //if its a lowercase
+                        else if (cur >= 'a' && cur <='z') {
+                            L++;  
+                        }
+
+                        //if its an uppercase
+                        else if (cur >= 'A' && cur <= 'Z') {
+                            U++;   
+                        }
+
+                        //else its a symbol
+                        else {
+                            //at the beginning or end
+                            if (x == 0 || x == randomPassword.length) {
+                                S++;
+                            }
+                            //in the middle
+                            else {
+                                S++;
+                                Sm++;
+                            }
+                        }
+                    }
+
+                    //number of characters
+                    N = parseInt(randomPassword.length);
+                    strength += (N * 4);
+
+                    //if there is at least one uppercase
+                    if (U > 0) {
+                        strength += ((N - U) * 2);
+                    }
+
+                    //if there is at least one uppercase
+                    if (L > 0) {
+                        strength += ((N - L) * 2);
+                    }
+
+                    //if password contains only digits
+                    if (D > 0 && L == 0 && U == 0 && S == 0) {
+                        strength += 0;
+                    }
+                    else {
+                        strength += (D * 4);
+                    }
+
+                    //number of symbols
+                    strength += (S * 6);
+
+                    //number of middle digits or middle symbols
+                    strength += ((Dm + Sm) * 2);
+
+                }
+
+                alert("Your new password is: " + randomPassword + "\nStrength = " + strength);
+
+            });
+
+
+            //get validity of submitted password (matching and strength)
+            document.getElementById("submit").addEventListener("click", validPassword);
+
+            function validPassword(event) {
+                let pword1 = document.getElementById("pWord1").value;
+                let pword2 = document.getElementById("pWord2").value;
+                let strength = 0, cur;
+                let N=0, U=0, L=0, D=0, S=0, Dm=0, Sm=0;
+
+                //uppercase, lowercase, digits, and symbols
+                for (let x = 0; x < pword1.length; x++) {
+                    cur = pword1.charAt(x);
+
+                    //if its a digit
+                    if (cur >= '0' && cur <= '9') {
+                        //at the beginning or end
+                        if (x == 0 || x == pword1.length) {
+                            D++;
+                        }
+                        //in the middle
+                        else {
+                            D++;
+                            Dm++;
+                        }
+                        
+                    }
+
+                    //if its a lowercase
+                    else if (cur >= 'a' && cur <='z') {
+                        L++;  
+                    }
+
+                    //if its an uppercase
+                    else if (cur >= 'A' && cur <= 'Z') {
+                        U++;   
+                    }
+
+                    //else its a symbol
+                    else {
+                        //at the beginning or end
+                        if (x == 0 || x == pword1.length) {
+                            S++;
+                        }
+                        //in the middle
+                        else {
+                            S++;
+                            Sm++;
+                        }
+                    }
+                }
+
+                //number of characters
+                N = parseInt(pword1.length);
+                strength += (N * 4);
+                //if there is at least one uppercase
+                if (U > 0) {
+                    strength += ((N - U) * 2);
+                }
+
+                //if there is at least one uppercase
+                if (L > 0) {
+                    strength += ((N - L) * 2);
+                }
+
+                //if password contains only digits
+                if (D > 0 && L == 0 && U == 0 && S == 0) {
+                    strength += 0;
+                }
+                else {
+                    strength += (D * 4);
+                }
+
+                //number of symbols
+                strength += (S * 6);
+
+                //number of middle digits or middle symbols
+                strength += ((Dm + Sm) * 2);
+
+
+                if (pword1 === pword2) {
+                    //alert("strength is " + strength + " digits found is " + D + " lowercase found is " + L + " Uppecase found is " + U + " symbols found is " + S + " middle digits found is " + Dm + " middle symbols found is " + Sm);
+                    //event.preventDefault();
+
+                    //test for strength
+                    //red
+                    if (strength > 0 && strength <= 30) {
+                        document.getElementById("errorMessage").innerHTML = "Password is weak";
+                        document.getElementById("errorMessage").style.color = "rgb(255, 0, 0)";
+                        //alert("weak");
+                    }
+                    //yellow
+                    else if (strength > 30 && strength <= 60) {
+                        document.getElementById("errorMessage").innerHTML = "Password is okay";
+                        document.getElementById("errorMessage").style.color = "rgb(255, 217, 0)";
+                        //alert("okay");
+                    }
+                    //green
+                    else if (strength > 60) {
+                        document.getElementById("errorMessage").innerHTML = "Password is strong";
+                        document.getElementById("errorMessage").style.color = "rgb(0, 255, 0)";
+                        //alert("strong");
+                        
+                    }
+                    
+                    //HOW DO I GET IT TO DISPLAY MESSAGE WITHOUT SUBMITTING>????????????????????????????????????
+
+                    return true;
+                }
+                else {
+                    //event.preventDefault();
+                    document.getElementById("errorMessage").innerHTML = "Passwords Do Not Match";
+                    document.getElementById("errorMessage").style.color = "rgb(255, 217, 0)";
+                    return false;
 
                 }
 
 
 
-                //needs to get the score of the random password and alert it with the password
+            }
 
-                alert("Your new password is: " + randomPassword + "\nStrength = " + strength);
-
-            });
 
 
         </script>
