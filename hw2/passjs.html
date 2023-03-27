@@ -7,12 +7,13 @@
     </head>
 
     <body>
+        <form id="functionForm"></form>
 
         <script>
             
 
-            var userForm = document.createElement("form");
-            userForm.setAttribute("id", "functionForm");
+            var userForm = document.getElementById("functionForm");
+
 
             var formHeader = document.createElement("header");
             formHeader.innerHTML = "Enter a Username and a Strong Password";
@@ -76,7 +77,7 @@
 
 
             var sInputDiv = document.createElement("div");
-            pWordDiv.setAttribute("id", "submit");
+            sInputDiv.setAttribute("id", "buttons");
             
             var sInput = document.createElement('input');
             //<input type="submit" id="submit" name="submit">
@@ -84,7 +85,14 @@
             sInput.setAttribute("id", "submit");
             sInput.setAttribute("name", "submit");
 
+            var generatePassword = document.createElement('input');
+            generatePassword.setAttribute("type", "button");
+            generatePassword.setAttribute("id", "generate");
+            generatePassword.setAttribute("name", "generate");
+            generatePassword.setAttribute("value", "Make Random Password");
+
             sInputDiv.appendChild(sInput);
+            sInputDiv.appendChild(generatePassword);
 
 
             //<p id="errorMessage"></p>
@@ -99,7 +107,37 @@
             userForm.appendChild(sInputDiv);
             userForm.appendChild(errorMessage);
 
-            document.querySelector("body").appendChild(userForm);
+
+
+
+
+
+            document.getElementById("generate").addEventListener("click", function(event) {
+
+                var randomPassword = "";
+                var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*_-?"
+                var length = Math.floor(Math.random() * (30 - 8 + 1) ) + 8; //8-30
+                var strength = 0;
+
+                while (strength <= 60) {
+                    for(var x = 0; x < length; x++) {
+                        var randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
+                        randomPassword += randomChar;
+
+                    }
+
+                    strength = validPassword(randomPassword); //i need to make a call to validPassword that takes in a string password, not an event???
+
+                }
+
+
+
+                //needs to get the score of the random password and alert it with the password
+
+                alert("Your new password is: " + randomPassword + "\nStrength = " + strength);
+
+            });
+
 
         </script>
 
